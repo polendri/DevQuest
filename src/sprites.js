@@ -71,6 +71,8 @@ function initSprites(Q) {
     
   Q.Sprite.extend("EnemySpawner", {
     init: function(props, defaultProps) {
+      props.w = Q.DEFAULT_CELL_WIDTH;
+      props.h = Q.DEFAULT_CELL_HEIGHT;
       props.spawnCounter = 0;
       props.spawnTimeRemaining = 0;
       props.spawnInterval = 0.25;

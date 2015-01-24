@@ -20,11 +20,6 @@ window.addEventListener('load',function() {
   Q.scene("start",function(stage) {
     Q.stageTMX('stage1.tmx', stage);
 
-    var spawner = stage.insert(new Q.EnemySpawner({
-      x: 15 * Q.DEFAULT_CELL_WIDTH,
-      y: 490 * Q.DEFAULT_CELL_HEIGHT,
-    }));  
-
     var player = stage.detect(function() { return this.p.team === 'players' });
     stage.add('viewport').follow(player);
   });
