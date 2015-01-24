@@ -80,9 +80,12 @@ function initSprites(Q) {
       props.h = Q.DEFAULT_CELL_HEIGHT;
       props.spawnCounter = 0;
       props.spawnTimeRemaining = 0;
+      
+      // props for the editor
       props.spawnInterval = 0.25;
       props.maximumSpawns = 10;
       props.spawnTypes = [ 'Bug' ];
+      props.spawnRadius = 0;
       
       this._super(props, defaultProps);
       
@@ -100,7 +103,12 @@ function initSprites(Q) {
       if (this.p.spawnTimeRemaining <= 0) {       
         var chosenSpawnType = this.p.spawnTypes[Math.floor(Math.random() * this.p.spawnTypes.length)];
         var factoryFunction = Q.SpawnMapping[chosenSpawnType];
-        var spawned = factoryFunction(Q, this.p.x / Q.DEFAULT_CELL_WIDTH, this.p.y / Q.DEFAULT_CELL_HEIGHT);
+        
+        var spawnAngle = Math.random() * Math.PI * 2;
+        var xLocation = this.p.x + this.p.spawnRadius * Math.random() * Math.cos(spawnAngle);
+        var yLocation = this.p.y + this.p.spawnRadius * Math.random() * Math.sin(spawnAngle);
+        
+        var spawned = factoryFunction(Q, xLocation / Q.DEFAULT_CELL_WIDTH, yLocation / Q.DEFAULT_CELL_HEIGHT);
         
         this.stage.insert(spawned);
         
