@@ -16,24 +16,18 @@ window.addEventListener('load',function() {
   
   initComponents(Q);
   initSprites(Q);
-
-  Q.scene("start",function(stage) {
-    Q.stageTMX('stage1.tmx', stage);
-
-    var player = stage.detect(function() { return this.p.team === 'players' });
-    stage.add('viewport').follow(player);
-  });
+  initScenes(Q);
 
   Q.loadTMX(
-    'stage1.tmx, tiles.png, ' +
+    'stage1.tmx, tiles.png, play_button.png, title.png, ' +
     'sprites/coder.png, ' +
     'sprites/bug.png, ' +
     'sprites/customer.png, ' +
-    'sprites/salesperson.png, ' +,
+    'sprites/salesperson.png, ' +
     'sprites/stress_ball.png',
     function() {
       // Start the show
-      Q.stageScene("start");
+      Q.stageScene("mainMenu");
 
       // Turn on default keyboard controls
       Q.input.keyboardControls();

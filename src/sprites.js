@@ -1,6 +1,28 @@
 function initSprites(Q) {
   Q.DEFAULT_CELL_WIDTH = 32;
   Q.DEFAULT_CELL_HEIGHT = 32;
+  
+  // An otherwise static sprite that hovers up and down steadily.
+  Q.Sprite.extend("HoverSprite", {
+    init: function(p) {
+      this._super(p, {
+        // The amount to hover up and down from the original y-location.
+        amplitude: 3,
+        // The time it takes to hover up, down and back to level again.
+        period: 2,
+        // The y-coordinate around which the hovering happens.
+        centerY: p.y,
+        // The elapsed time since hovering started (supplied to the
+        // function that determines the height).
+        elapsed: 0
+      });
+    },
+
+    step: function(dt) {
+      this.p.elapsed += dt;
+      this.p.y = this.p.centerY + this.p.amplitude * Math.sin(2*Math.PI * (this.p.elapsed/this.p.period));
+    }
+  });
 
   Q.Sprite.extend("StressBall", {
     init: function(p) {
@@ -37,36 +59,38 @@ function initSprites(Q) {
 
   Q.Sprite.extend("Actor",{
     init: function(props, defaultProps) {
-
+      // base class initialization
       this._super(props, defaultProps);
+
+      // components
       this.add("2d, team");
 
       this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
-        if(this.p.team != 'players' && collision.obj.has('team')) { 
+        if (this.p.team != 'players' && collision.obj.has('team')) { 
           if (collision.obj.p.team != this.p.team) {
+            Q.stageScene("endGame",1, { label: "You're basically the worst." });
             collision.obj.destroy();
           }
         }
       });
     }});
 
-  Q.Sprite.extend("Player",{
+  Q.Actor.extend("Player",{
     init: function(props, defaultProps) {
+      // property initialization
       props.asset = 'sprites/coder.png';
       props.team = 'players';
       props.bulletSpeed = 100;
       props.rangeWeaponType = Q.StressBall;
+      
+      // base class initialization
       this._super(props, defaultProps);
-      this.add("2d, team, stepControls, rangeAttacker");
+      
+      // components
+      this.add("stepControls, rangeAttacker");
+      
+      // events
       Q.input.on("fire", this, "fireRange");
-
-      this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
-        if(this.p.team != 'players' && collision.obj.has('team')) { 
-          if (collision.obj.team != this.p.team) {
-            collision.obj.destroy();
-          }
-        }
-      });
     },
 
     fireRange: function() {
