@@ -14,18 +14,22 @@ window.addEventListener('load',function() {
   Q.gravityX = 0;
   Q.gravityY = 0;
 
+  initSprites(Q);
+
   Q.scene("start",function(stage) {
     Q.stageTMX('stage1.tmx', stage);
 
     // A basic sprite shape a asset as the image
     var player = stage.insert(createPlayer(Q));
+    //Q.input.on("fire", player, "fire");
 
     stage.add('viewport').follow(player);
+    console.log("added player");
   });
 
   Q.loadTMX(
     'stage1.tmx, tiles.png, ' +
-    'sprites/coder.png',
+    'sprites/coder.png, sprites/bug.png',
     function() {
       // Start the show
       Q.stageScene("start");
