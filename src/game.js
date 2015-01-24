@@ -13,12 +13,16 @@ window.addEventListener('load',function() {
 
   Q.gravityX = 0;
   Q.gravityY = 0;
+  
+  initComponents(Q);
+  initSprites(Q);
 
   Q.scene("start",function(stage) {
     Q.stageTMX('stage1.tmx', stage);
 
     // A basic sprite shape a asset as the image
     var player = stage.insert(createPlayer(Q));
+	var player = stage.insert(createBug(Q, 11, 998));
 
     stage.add('viewport').follow(player);
   });
