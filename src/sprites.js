@@ -4,7 +4,7 @@ function initSprites(Q) {
 	
 	Q.Sprite.extend("Actor",{
     init: function(props, defaultProps) {
-
+	
       this._super(props, defaultProps);
 	  this.add("2d, team");
 	  
@@ -36,6 +36,12 @@ function createBug(Q, xPos, yPos) {
     asset: 'sprites/bug.png',
 	team: 'baddies',
   });  
+  		
+  actor.p.homingPredicate = function(t) {
+	// return t.has('team') && t.p.health > 0 && t.p.team != this.p.team;
+	return t.has('team') && t.p.team != 'baddies';
+  };
+  
   actor.add("homing");
   return actor;
 }

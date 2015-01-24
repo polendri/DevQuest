@@ -44,9 +44,9 @@ function initComponents(Q) {
     },
 
     // Find the closest other entity which satisfies the provided predicate.
-    _findClosest: function(predicate) {
-      if (!predicate) {
-        predicate = function() { return true; }
+    _findClosest: function(homingPredicate) {
+      if (!homingPredicate) {
+        homingPredicate = function() { return true; }
       }
       var p = this.entity.p;
       var stage = this.entity.stage;
@@ -56,7 +56,7 @@ function initComponents(Q) {
       for (var i = 0; i < stage.items.length; i++) {
         var target = stage.items[i];
 
-        if (!predicate(target) || target === this.entity) {
+        if (!homingPredicate(target) || target === this.entity) {
           continue;
         }
 
@@ -82,7 +82,7 @@ function initComponents(Q) {
     _acquireTarget: function() {
       var p = this.entity.p;
       p.target = this._findClosest(function(target) {
-        return p.predicate(target)
+        return p.homingPredicate(target)
           && (!target.p.followerCount || target.p.followerCount < p.maxFollowers);
       });
       p.retargetCountdown += p.retargetFreq;
@@ -107,7 +107,7 @@ function initComponents(Q) {
     defaults: {
       // The predicate with which to filter which entities get considered for
       // homing.
-      predicate: function() { return true; },
+      homingPredicate: function() { return true; },
       // The homing movement speed.
       speed: 25,
       // The entity's facing (front, left, back or right).
