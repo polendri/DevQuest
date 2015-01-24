@@ -20,22 +20,19 @@ window.addEventListener('load',function() {
   Q.scene("start",function(stage) {
     Q.stageTMX('stage1.tmx', stage);
 
-    // A basic sprite shape a asset as the image
-    var player = stage.insert(new Q.Player({ x: 10*Q.DEFAULT_CELL_WIDTH, y: 498*Q.DEFAULT_CELL_HEIGHT}));
-    
     var spawner = stage.insert(new Q.EnemySpawner({
       x: 15 * Q.DEFAULT_CELL_WIDTH,
       y: 490 * Q.DEFAULT_CELL_HEIGHT,
     }));  
 
+    var player = stage.detect(function() { return this.p.team === 'players' });
     stage.add('viewport').follow(player);
-    console.log("added player");
   });
 
   Q.loadTMX(
     'stage1.tmx, tiles.png, ' +
     'sprites/coder.png, ' +
-	  'sprites/bug.png',
+    'sprites/bug.png',
     function() {
       // Start the show
       Q.stageScene("start");
