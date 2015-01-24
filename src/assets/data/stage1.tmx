@@ -41020,10 +41020,10 @@
     <property name="Class" value="Player"/>
    </properties>
   </object>
-  <object name="bugSpawner" gid="1" x="640" y="15488">
+  <object name="testSpawner" gid="1" x="640" y="15488">
    <properties>
     <property name="Class" value="EnemySpawner"/>
-    <property name="spawnTypes" value="['Bug']"/>
+    <property name="spawnTypes" value="Bug,Customer,Sales Person"/>
    </properties>
   </object>
  </objectgroup>

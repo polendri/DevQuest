@@ -84,7 +84,13 @@ function initSprites(Q) {
       // props for the editor
       props.spawnInterval = 0.25;
       props.maximumSpawns = 10;
-      props.spawnTypes = [ 'Bug' ];
+      
+      if (props.spawnTypes == null) {
+        props.spawnTypes = [ 'Bug' ];
+      } else if (typeof props.spawnTypes === 'string') {
+        props.spawnTypes = props.spawnTypes.split(',');
+      } 
+      
       props.spawnRadius = 0;
       
       this._super(props, defaultProps);
@@ -119,6 +125,8 @@ function initSprites(Q) {
     
     Q.SpawnMapping = { };
     Q.SpawnMapping['Bug'] = createBug;
+    Q.SpawnMapping['Customer'] = createCustomer;
+    Q.SpawnMapping['Sales Person'] = createSalesPerson;
 }
 
 function createBug(Q, xPos, yPos) {
@@ -135,7 +143,50 @@ function createBug(Q, xPos, yPos) {
   };
   
   actor.add("homing, mortal, ai");
+  return actor;
+}
+
+function createCustomer(Q, xPos, yPos) {
+  var actor = new Q.Actor({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    asset: 'sprites/customer.png',
+    team: 'baddies',
+    speed: 75,
+    sight: 200,
+  });  
+  
+  actor.p.homingPredicate = function(t) {
+    // return t.has('team') && t.p.health > 0 && t.p.team != this.p.team;
+    return t.has('team') && t.p.team != 'baddies';
+  };
+  		  
+  actor.add("homing, mortal, ai");
   actor.p.rangeWeaponType = Q.StressBall;
   return actor;
 }
 
+function createSalesPerson(Q, xPos, yPos) {
+  var actor = new Q.Actor({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    asset: 'sprites/customer.png',
+    team: 'baddies',
+  });  
+  		  
+  actor.add("mortal, ai");
+  return actor;
+}
+
+function createSalesPerson(Q, xPos, yPos) {
+  var actor = new Q.Actor({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    asset: 'sprites/salesperson.png',
+    team: 'baddies',
+  });  
+  		  
+  actor.add("mortal, ai");
+  actor.p.rangeWeaponType = Q.StressBall;
+  return actor;
+}
