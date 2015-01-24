@@ -18,12 +18,7 @@ window.addEventListener('load',function() {
     Q.stageTMX('stage1.tmx', stage);
 
     // A basic sprite shape a asset as the image
-    var player = stage.insert(new Q.Sprite({
-      x: 10*32,
-      y: 998*32,
-      asset: 'sprites/coder.png'
-    }));
-    player.add("2d, platformerControls");
+    var player = stage.insert(createPlayer(Q));
 
     stage.add('viewport').follow(player);
   });
