@@ -63,6 +63,10 @@ function initComponents(Q) {
         var x = target.p.x - p.x;
         var y = target.p.y - p.y;
         var targetDistance = Math.sqrt(x*x + y*y);
+        
+        if (targetDistance > p.sight) {
+          continue;
+        }
 
         if (closest === null) {
           closest = target;
@@ -132,7 +136,9 @@ function initComponents(Q) {
       // to prevent stuttery behaviour when moving diagonally.
       commitment: 0,
       // Whether or not homing is active.
-      homingActive: false
+      homingActive: false,
+      // Used to know how far a target can be found
+      sight: 100,
     },
 
     added: function() {
