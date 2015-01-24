@@ -2,6 +2,39 @@ function initSprites(Q) {
   Q.DEFAULT_CELL_WIDTH = 32;
   Q.DEFAULT_CELL_HEIGHT = 32;
 
+  Q.Sprite.extend("StressBall", {
+    init: function(p) {
+      this._super(p, {
+        w: 20,
+        h: 20,
+        power: 3
+      });
+
+      this.add("2d");
+      this.on("hit.sprite", this, "collision");
+    },
+
+    collision: function(col) {
+      var target = col.obj;
+      if (target.has('mortal')) {
+        target.takeDamage(this.p.power);
+      }
+
+      this.destroy();
+    },
+
+    draw: function(ctx) {
+      ctx.fillStyle = "#111";
+      ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
+    },
+
+    step: function(dt) {
+      if(!Q.overlap(this,this.stage)) {
+        this.destroy();
+      }
+    }
+  });
+
   Q.Sprite.extend("Actor",{
     init: function(props, defaultProps) {
 
@@ -21,8 +54,10 @@ function initSprites(Q) {
     init: function(props, defaultProps) {
       props.asset = 'sprites/coder.png';
       props.team = 'players';
+      props.bulletSpeed = 100;
       this._super(props, defaultProps);
-      this.add("2d, team, stepControls");
+      this.add("2d, team, stepControls, rangeAttacker");
+      Q.input.on("fire", this, "fireRange");
 
       this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
         if(this.p.team != 'players' && collision.obj.has('team')) { 
@@ -31,7 +66,8 @@ function initSprites(Q) {
           }
         }
       });
-    }});
+    },
+  });
 }
 
 function createBug(Q, xPos, yPos) {
@@ -47,51 +83,7 @@ function createBug(Q, xPos, yPos) {
 	return t.has('team') && t.p.team != 'baddies';
   };
   
-  actor.add("homing");
+  actor.add("homing, mortal");
   return actor;
-}
-function createPlayer(Q) {
-  var player = new Q.Sprite({
-    x: 10*32,
-    y: 998*32,
-    asset: 'sprites/coder.png'
-  });
-  player.add("2d, stepControls, rangeAttacker");
-  return player;
-}
-
-function initSprites(Q) {
-  Q.Sprite.extend("StressBall", {
-    init: function(p) {
-      this._super(p, {
-        w: 2,
-        h: 2,
-        power: 3
-      });
-
-      this.add("2d");
-      this.on("hit.sprite", this, "collision");
-    },
-
-    collision: function(col) {
-      var target = col.obj;
-      if (target.has('mortal')) {
-        target.takeDamage(this.p.power);
-      }
-
-      this.destroy();
-    },
-
-    draw: function(ctx) {
-      ctx.fillStyle = "#000";
-      ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
-    },
-
-    step: function(dt) {
-      if(!Q.overlap(this,this.stage)) {
-        this.destroy();
-      }
-    }
-  });
 }
 

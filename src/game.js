@@ -34,7 +34,7 @@ window.addEventListener('load',function() {
 
   Q.loadTMX(
     'stage1.tmx, tiles.png, ' +
-    'sprites/coder.png',
+    'sprites/coder.png, ' +
 	'sprites/bug.png',
     function() {
       // Start the show

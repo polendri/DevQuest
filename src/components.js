@@ -222,21 +222,28 @@ function initComponents(Q) {
       this._super();
     }
   });
-}
-function initComponents(Q) {
-  //Q.component('mortal', {
-    //defaults: {
-      //health: 10,
-    //},
 
-    //extend: {
-      //// Take the specified damage and update accordingly.
-      //takeDamage: function(dmg) {
-        //this.p.health -= dmg;
-      //},
-    //},
+  
+  Q.component('mortal', {
+    defaults: {
+      health: 10,
+    },
 
-  //});
+    added: function() {
+      var p = this.entity.p;
+      Q._defaults(p, this.defaults);
+    },
+
+    extend: {
+      // Take the specified damage and update accordingly.
+      takeDamage: function(dmg) {
+        this.p.health -= dmg;
+        if (this.p.health <= 0) {
+          this.destroy();
+        }
+      }
+    }
+  });
 
   //Q.component('meleeAttacker', {
     //defaults: {
@@ -264,39 +271,41 @@ function initComponents(Q) {
     defaults: {
       power: 5,
       range: 30,
-      cooldown: 3
-      //type: Q.StressBall
+      cooldown: 3,
+      //lol: Q.StressBall
     },
 
     added: function() {
-      var p = this.entity.p.rangeAttack;
+      var p = this.entity.p;
       Q._defaults(p, this.defaults);
-      this.entity.on('step');
-      this.entity.on('rangeAttackLanded');
+      //this.entity.on('step');
+      //this.entity.on('rangeAttackLanded');
     },
 
-    step: function(dt) {
-      var p = this.entity.p;
-    },
+    //step: function(dt) {
+      //var p = this.entity.p;
+    //},
 
-    rangeAttackLanded: function(dt) {
-      var p = this.entity.p;
-    },
+    //rangeAttackLanded: function(dt) {
+      //var p = this.entity.p;
+    //},
 
-    //extend: {
-      fire: function() {
-        console.log("lol");
-        //var p = this.entity.p;
+    extend: {
+      fireRange: function() {
+        var p = this.p;
         //var dx =  Math.sin(p.angle * Math.PI / 180);
         //var dy = -Math.cos(p.angle * Math.PI / 180);
-        //this.stage.insert(
-          //new Q.StressBall({ 
-            //x: this.entity.c.points[0][0], 
-            //y: this.entity.c.points[0][1],
+        this.stage.insert(
+          new Q.StressBall({ 
+            // XXX these params are obviously ridiculous
+            x: this.c.points[0][0] + 50, 
+            y: this.c.points[0][1] + 15,
             //vx: dx * p.bulletSpeed,
             //vy: dy * p.bulletSpeed
-          //}));
+            vx: 100,
+            vy: 0
+          }));
       }
-    //}
+    }
   });
 }
