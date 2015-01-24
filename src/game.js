@@ -21,7 +21,7 @@ window.addEventListener('load',function() {
     Q.stageTMX('stage1.tmx', stage);
 
     // A basic sprite shape a asset as the image
-    var player = stage.insert(createPlayer(Q));
+    var player = stage.insert(createPlayer(Q, 10, 998));
 	var player = stage.insert(createBug(Q, 11, 998));
 
     stage.add('viewport').follow(player);
@@ -29,7 +29,8 @@ window.addEventListener('load',function() {
 
   Q.loadTMX(
     'stage1.tmx, tiles.png, ' +
-    'sprites/coder.png',
+    'sprites/coder.png, ' +
+	'sprites/bug.png',
     function() {
       // Start the show
       Q.stageScene("start");
