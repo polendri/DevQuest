@@ -64014,4 +64014,46 @@
    <tile gid="0"/>
   </data>
  </layer>
+ <objectgroup name="Object Layer 1" width="32" height="1000">
+  <object name="player" gid="1" x="320" y="31808">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+  <object name="player" gid="1" x="512" y="31616">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+  <object name="player" gid="1" x="512" y="31488">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+  <object name="player" gid="1" x="288" y="31456">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+  <object name="player" gid="1" x="288" y="31648">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+  <object name="player" gid="1" x="416" y="31552">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+  <object name="player" gid="1" x="256" y="31872">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+  <object name="player" gid="1" x="416" y="31744">
+   <properties>
+    <property name="Class" value="Player"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>
