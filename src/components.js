@@ -251,10 +251,12 @@ function initComponents(Q) {
     }
   });
 
+  Q.component('ai', {});
+
   //Q.component('meleeAttacker', {
     //defaults: {
       //power: 4,
-      //cooldown: 1
+      //range: 3
     //},
 
     //added: function() {
@@ -276,42 +278,66 @@ function initComponents(Q) {
   Q.component('rangeAttacker', {
     defaults: {
       power: 5,
-      range: 30,
-      cooldown: 3,
-      //lol: Q.StressBall
+      range: 100,
     },
 
     added: function() {
       var p = this.entity.p;
+      p.cooldown = 3;
+
       Q._defaults(p, this.defaults);
-      //this.entity.on('step');
+      this.entity.on('step', this, 'step');
       //this.entity.on('rangeAttackLanded');
     },
 
-    //step: function(dt) {
-      //var p = this.entity.p;
-    //},
+    step: function(dt) {
+      var e = this.entity
+      var p = e.p;
+
+      if (p.cooldown > 0) {
+        p.cooldown -= dt;
+        return;
+      }
+
+      if (!(e.has('ai') && e.has('homing') && e.has('team'))) {
+        return;
+      }
+
+      var target = e['homing']._findClosest(function(t) { return t.p.team != e.team });
+
+      if (target === null) {
+        return;
+      }
+
+      var x = target.p.x - p.x;
+      var y = target.p.y - p.y;
+      var targetDistance = Math.sqrt(x*x + y*y);
+      
+      if (targetDistance <= p.range) {
+        this.fireRange(e.c);
+      }
+    },
 
     //rangeAttackLanded: function(dt) {
       //var p = this.entity.p;
     //},
 
-    extend: {
-      fireRange: function() {
-        var p = this.p;
-        //var dx =  Math.sin(p.angle * Math.PI / 180);
-        //var dy = -Math.cos(p.angle * Math.PI / 180);
-        this.stage.insert(
-          new Q.StressBall({ 
-            // XXX these params are obviously ridiculous
-            x: this.c.points[0][0] + 50, 
-            y: this.c.points[0][1] + 15,
-            //vx: dx * p.bulletSpeed,
-            //vy: dy * p.bulletSpeed
-            vx: 100,
-            vy: 0
-          }));
-      }
+    fireRange: function(c) {
+      var p = this.entity.p;
+      console.log("lol");
+      //var dx =  Math.sin(p.angle * Math.PI / 180);
+      //var dy = -Math.cos(p.angle * Math.PI / 180);
+      this.entity.stage.insert(
+        new p.rangeWeaponType({ 
+          // XXX these params are obviously ridiculous
+          x: c.points[0][0] + 50, 
+          y: c.points[0][1] + 15,
+          //vx: dx * p.bulletSpeed,
+          //vy: dy * p.bulletSpeed
+          vx: 100,
+          vy: 0, 
+        }));
+      p.cooldown = 3;
     }
   });
 }

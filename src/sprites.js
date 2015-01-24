@@ -55,6 +55,7 @@ function initSprites(Q) {
       props.asset = 'sprites/coder.png';
       props.team = 'players';
       props.bulletSpeed = 100;
+      props.rangeWeaponType = Q.StressBall;
       this._super(props, defaultProps);
       this.add("2d, team, stepControls, rangeAttacker");
       Q.input.on("fire", this, "fireRange");
@@ -67,6 +68,10 @@ function initSprites(Q) {
         }
       });
     },
+
+    fireRange: function() {
+      this['rangeAttacker'].fireRange(this.c);
+    }
   });
     
   Q.Sprite.extend("EnemySpawner", {
@@ -121,7 +126,8 @@ function createBug(Q, xPos, yPos) {
     return t.has('team') && t.p.team != 'baddies';
   };
   
-  actor.add("homing, mortal");
+  actor.add("homing, mortal, ai");
+  actor.p.rangeWeaponType = Q.StressBall;
   return actor;
 }
 
