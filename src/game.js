@@ -22,11 +22,11 @@ window.addEventListener('load',function() {
 
     // A basic sprite shape a asset as the image
     var player = stage.insert(new Q.Player({ x: 10*Q.DEFAULT_CELL_WIDTH, y: 498*Q.DEFAULT_CELL_HEIGHT}));
-    stage.insert(createBug(Q, 11, 490));
-    stage.insert(createBug(Q, 10, 491));
-    stage.insert(createBug(Q, 9, 492));
-    stage.insert(createBug(Q, 8, 493));
-    stage.insert(createBug(Q, 12, 495));
+    
+    var spawner = stage.insert(new Q.EnemySpawner({
+      x: 15 * Q.DEFAULT_CELL_WIDTH,
+      y: 490 * Q.DEFAULT_CELL_HEIGHT,
+    }));  
 
     stage.add('viewport').follow(player);
     console.log("added player");
@@ -35,7 +35,7 @@ window.addEventListener('load',function() {
   Q.loadTMX(
     'stage1.tmx, tiles.png, ' +
     'sprites/coder.png, ' +
-	'sprites/bug.png',
+	  'sprites/bug.png',
     function() {
       // Start the show
       Q.stageScene("start");

@@ -68,6 +68,42 @@ function initSprites(Q) {
       });
     },
   });
+    
+  Q.Sprite.extend("EnemySpawner", {
+    init: function(props, defaultProps) {
+      props.spawnCounter = 0;
+      props.spawnTimeRemaining = 0;
+      props.spawnInterval = 0.25;
+      props.maximumSpawns = 10;
+      props.spawnTypes = [ 'Bug' ];
+      
+      this._super(props, defaultProps);
+      
+      this.add("2d");
+    },
+    
+    step: function(dt) {
+      if (this.p.maximumSpawns <= this.p.spawnCounter) {
+        this.destroy();
+        return;
+      }
+
+      this.p.spawnTimeRemaining -= dt;
+      
+      if (this.p.spawnTimeRemaining <= 0) {       
+        var chosenSpawnType = this.p.spawnTypes[Math.floor(Math.random() * this.p.spawnTypes.length)];
+        var factoryFunction = Q.SpawnMapping[chosenSpawnType];
+        var spawned = factoryFunction(Q, this.p.x / Q.DEFAULT_CELL_WIDTH, this.p.y / Q.DEFAULT_CELL_HEIGHT);
+        
+        this.stage.insert(spawned);
+        
+        this.p.spawnCounter++;
+        this.p.spawnTimeRemaining = this.p.spawnInterval;
+      }
+    }});
+    
+    Q.SpawnMapping = { };
+    Q.SpawnMapping['Bug'] = createBug;
 }
 
 function createBug(Q, xPos, yPos) {
@@ -79,8 +115,8 @@ function createBug(Q, xPos, yPos) {
   });  
   		
   actor.p.homingPredicate = function(t) {
-	// return t.has('team') && t.p.health > 0 && t.p.team != this.p.team;
-	return t.has('team') && t.p.team != 'baddies';
+    // return t.has('team') && t.p.health > 0 && t.p.team != this.p.team;
+    return t.has('team') && t.p.team != 'baddies';
   };
   
   actor.add("homing, mortal");
