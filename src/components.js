@@ -278,7 +278,7 @@ function initComponents(Q) {
   Q.component('rangeAttacker', {
     defaults: {
       power: 5,
-      range: 100,
+      range: 200,
     },
 
     added: function() {
@@ -303,7 +303,7 @@ function initComponents(Q) {
         return;
       }
 
-      var target = e['homing']._findClosest(function(t) { return t.p.team != e.team });
+      var target = e['homing']._findClosest(function(t) { return t.has('team') && t.p.team != 'baddies' });
 
       if (target === null) {
         return;
@@ -314,7 +314,7 @@ function initComponents(Q) {
       var targetDistance = Math.sqrt(x*x + y*y);
       
       if (targetDistance <= p.range) {
-        this.fireRange(e.c);
+        this.fireRange(x, y);
       }
     },
 
@@ -322,20 +322,16 @@ function initComponents(Q) {
       //var p = this.entity.p;
     //},
 
-    fireRange: function(c) {
+    fireRange: function(dx, dy) {
       var p = this.entity.p;
-      console.log("lol");
-      //var dx =  Math.sin(p.angle * Math.PI / 180);
-      //var dy = -Math.cos(p.angle * Math.PI / 180);
+      var d = Math.sqrt(dx*dx + dy*dy);
       this.entity.stage.insert(
         new p.rangeWeaponType({ 
-          // XXX these params are obviously ridiculous
-          x: c.points[0][0] + 50, 
-          y: c.points[0][1] + 15,
-          //vx: dx * p.bulletSpeed,
-          //vy: dy * p.bulletSpeed
-          vx: 100,
-          vy: 0, 
+          x: p.x + (p.w / 2), 
+          y: p.y - (p.h / 2),
+          vx: dx / (d / 100),
+          vy: dy / (d / 100),
+          src: this.entity
         }));
       p.cooldown = 3;
     }

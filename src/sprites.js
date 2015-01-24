@@ -38,6 +38,9 @@ function initSprites(Q) {
 
     collision: function(col) {
       var target = col.obj;
+      if (target === this.p.src) {
+        return;
+      }
       if (target.has('mortal')) {
         target.takeDamage(this.p.power);
       }
@@ -94,7 +97,7 @@ function initSprites(Q) {
     },
 
     fireRange: function() {
-      this['rangeAttacker'].fireRange(this.c);
+      this['rangeAttacker'].fireRange(1, 0);
     }
   });
     
