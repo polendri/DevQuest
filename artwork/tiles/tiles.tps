@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>../../src/assets/images/tiles.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -188,7 +188,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../../src/assets/images/tiles</filename>
+            <filename>./</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
