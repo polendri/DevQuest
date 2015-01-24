@@ -22,7 +22,11 @@ window.addEventListener('load',function() {
 
     // A basic sprite shape a asset as the image
     var player = stage.insert(createPlayer(Q, 10, 998));
-	var player = stage.insert(createBug(Q, 11, 998));
+	stage.insert(createBug(Q, 11, 990));
+	stage.insert(createBug(Q, 10, 991));
+	stage.insert(createBug(Q, 9, 992));
+	stage.insert(createBug(Q, 8, 993));
+	stage.insert(createBug(Q, 12, 995));
 
     stage.add('viewport').follow(player);
   });
