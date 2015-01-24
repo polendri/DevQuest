@@ -21,12 +21,12 @@ window.addEventListener('load',function() {
     Q.stageTMX('stage1.tmx', stage);
 
     // A basic sprite shape a asset as the image
-    var player = stage.insert(new Q.Player({ x: 10*Q.DEFAULT_CELL_WIDTH, y: 998*Q.DEFAULT_CELL_HEIGHT}));
-    stage.insert(createBug(Q, 11, 990));
-    stage.insert(createBug(Q, 10, 991));
-    stage.insert(createBug(Q, 9, 992));
-    stage.insert(createBug(Q, 8, 993));
-    stage.insert(createBug(Q, 12, 995));
+    var player = stage.insert(new Q.Player({ x: 10*Q.DEFAULT_CELL_WIDTH, y: 498*Q.DEFAULT_CELL_HEIGHT}));
+    stage.insert(createBug(Q, 11, 490));
+    stage.insert(createBug(Q, 10, 491));
+    stage.insert(createBug(Q, 9, 492));
+    stage.insert(createBug(Q, 8, 493));
+    stage.insert(createBug(Q, 12, 495));
 
     stage.add('viewport').follow(player);
     console.log("added player");
