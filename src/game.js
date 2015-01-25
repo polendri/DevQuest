@@ -21,6 +21,8 @@ window.addEventListener('load',function() {
   Q.loadTMX(
     'stage1.tmx, tiles.png, play_button.png, title.png, ' +
     'sprites/coder.png, ' +
+    'sprites/tester.png, ' +
+    'sprites/manager.png, ' +
     'sprites/bug.png, ' +
     'sprites/customer.png, ' +
     'sprites/salesperson.png, ' +

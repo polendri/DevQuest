@@ -35,8 +35,5 @@ function initScenes(Q) {
     
   Q.scene("game",function(stage) {
     Q.stageTMX('stage1.tmx', stage);
-
-    var player = stage.detect(function() { return this.p.team === 'players' });
-    stage.add('viewport').follow(player);
   });
 }

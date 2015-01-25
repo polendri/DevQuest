@@ -41030,15 +41030,20 @@
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="41" height="500">
-  <object name="player" gid="1" x="640" y="15872">
+  <object name="playerSpawner" gid="1" x="640" y="15872">
    <properties>
-    <property name="Class" value="Player"/>
+    <property name="Class" value="Spawner"/>
+    <property name="spawnTypes" value="Manager"/>
+    <property name="spawnRadius" value="50"/>
+    <property name="maximumSpawns" value="1"/>
    </properties>
   </object>
-  <object name="testSpawner" gid="1" x="640" y="15488">
+  <object name="enemySpawner" gid="1" x="640" y="15488">
    <properties>
-    <property name="Class" value="EnemySpawner"/>
+    <property name="Class" value="Spawner"/>
     <property name="spawnTypes" value="Bug,Customer,Sales Person"/>
+    <property name="spawnRadius" value="100"/>
+    <property name="maximumSpawns" value="10"/>
    </properties>
   </object>
  </objectgroup>

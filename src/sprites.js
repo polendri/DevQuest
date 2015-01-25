@@ -101,7 +101,7 @@ function initSprites(Q) {
     }
   });
     
-  Q.Sprite.extend("EnemySpawner", {
+  Q.Sprite.extend("Spawner", {
     init: function(props, defaultProps) {
       props.w = Q.DEFAULT_CELL_WIDTH;
       props.h = Q.DEFAULT_CELL_HEIGHT;
@@ -110,15 +110,14 @@ function initSprites(Q) {
       
       // props for the editor
       props.spawnInterval = 0.25;
-      props.maximumSpawns = 10;
+      // props.maximumSpawns = 10;
+      // props.spawnRadius = 0;
       
       if (props.spawnTypes == null) {
         props.spawnTypes = [ 'Bug' ];
       } else if (typeof props.spawnTypes === 'string') {
         props.spawnTypes = props.spawnTypes.split(',');
       } 
-      
-      props.spawnRadius = 0;
       
       this._super(props, defaultProps);
       
@@ -154,6 +153,45 @@ function initSprites(Q) {
     Q.SpawnMapping['Bug'] = createBug;
     Q.SpawnMapping['Customer'] = createCustomer;
     Q.SpawnMapping['Sales Person'] = createSalesPerson;
+    Q.SpawnMapping['Coder'] = createCoder;
+    Q.SpawnMapping['Tester'] = createTester;
+    Q.SpawnMapping['Manager'] = createManager;
+}
+
+function createPlayer(Q, xPos, yPos) {
+  var actor = new Q.Player({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    team: 'players',
+  });  
+  		  
+  actor.add("mortal, stepControls");
+  
+  // xxx FILTHY HACK: replace this by using a camera component
+  Q.stage(0).add('viewport').follow(actor);
+  
+  return actor;
+}
+
+function createCoder(Q, xPos, yPos) {
+  var actor = createPlayer(Q, xPos, yPos);
+  actor.p.asset = 'sprites/coder.png';
+  
+  return actor;
+}
+
+function createTester(Q, xPos, yPos) {
+  var actor = createPlayer(Q, xPos, yPos);
+  actor.p.asset = 'sprites/tester.png';
+  
+  return actor;
+}
+
+function createManager(Q, xPos, yPos) {
+  var actor = createPlayer(Q, xPos, yPos);
+  actor.p.asset = 'sprites/manager.png';
+  
+  return actor;
 }
 
 function createBug(Q, xPos, yPos) {
