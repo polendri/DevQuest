@@ -2,6 +2,26 @@ function initSprites(Q) {
   Q.DEFAULT_CELL_WIDTH = 32;
   Q.DEFAULT_CELL_HEIGHT = 32;
   
+  Q.Sprite.extend("WinCondition", {
+    init: function(p) {
+      p.asset = 'sprites/bug.png';
+      
+      this._super(p, {});
+      
+      this.add("2d");
+      
+      this.on("hit.sprite", this, "collision");
+    },
+
+    collision: function(col) {
+      var target = col.obj;
+      
+      if (target.has('team') && target.p.team === 'players') {
+        Q.stageScene("endGame", 1, { label: "Sheeit, playa. You've been makin' all kinds of gainz." });
+      }
+    },
+  });
+  
   // An otherwise static sprite that hovers up and down steadily.
   Q.Sprite.extend("HoverSprite", {
     init: function(p) {
@@ -71,7 +91,7 @@ function initSprites(Q) {
       this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
         if (this.p.team != 'players' && collision.obj.has('team')) { 
           if (collision.obj.p.team != this.p.team) {
-            Q.stageScene("endGame",1, { label: "You're basically the worst." });
+            Q.stageScene("endGame", 1, { label: "You're basically the worst." });
             collision.obj.destroy();
           }
         }
