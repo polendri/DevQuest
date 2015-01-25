@@ -47,9 +47,8 @@ function initSprites(Q) {
   Q.Sprite.extend("StressBall", {
     init: function(p) {
       this._super(p, {
-        w: 20,
-        h: 20,
-        power: 3
+        power: 3,
+        asset: "sprites/stress_ball.png"
       });
 
       this.add("2d");
@@ -68,10 +67,10 @@ function initSprites(Q) {
       this.destroy();
     },
 
-    draw: function(ctx) {
-      ctx.fillStyle = "#111";
-      ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
-    },
+    //draw: function(ctx) {
+      //ctx.fillStyle = "#111";
+      //ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
+    //},
 
     step: function(dt) {
       if(!Q.overlap(this,this.stage)) {
@@ -88,16 +87,15 @@ function initSprites(Q) {
       // components
       this.add("2d, team");
 
-      this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
-        if (this.p.team != 'players' && collision.obj.has('team')) { 
-          if (collision.obj.p.team != this.p.team) {
-            Q.stageScene("endGame", 1, { label: "You're basically the worst." });
-            collision.obj.destroy();
-          }
-        }
-      });
-    }
-  });
+      //this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
+        //if (this.p.team != 'players' && collision.obj.has('team')) { 
+          //if (collision.obj.p.team != this.p.team) {
+            //Q.stageScene("endGame",1, { label: "You're basically the worst." });
+            //collision.obj.destroy();
+          //}
+        //}
+      //});
+    }});
 
   Q.Actor.extend("Player",{
     init: function(props, defaultProps) {
@@ -112,15 +110,36 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("mortal, stepControls, rangeAttacker, camera");
+      this.add("stepControls, rangeAttacker");
       
       // events
       Q.input.on("fire", this, "fireRange");
+
+      this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
+        if (this.p.team != 'players' && collision.obj.has('team')) { 
+          if (collision.obj.p.team != this.p.team) {
+            this.takeDamage(2); // XXX
+          }
+        }
+      });
+
+      this.p.rangeAttack.weaponType = Q.StressBall;
+      this.p.health = 40;
     },
 
     fireRange: function() {
-      this['rangeAttacker'].fireRange(1, 0);
+      this['rangeAttacker'].attack(null, 1, 0);
+    },
+
+    destroy: function() {
+      Q.stageScene("endGame",1, { label: "You're basically the worst." });
+      this._super();
+    },
+
+    shouldTarget: function(target) {
+      return target.has('team') && target.p.team == 'baddies';
     }
+
   });
     
   Q.Sprite.extend("Spawner", {
@@ -274,6 +293,10 @@ function createBug(Q, xPos, yPos) {
   };
   
   actor.add("homing, mortal, ai");
+
+
+  actor.shouldTarget = actor.p.homingPredicate;
+  //actor.p.rangeAttack.weaponType = Q.StressBall;
   return actor;
 }
 
@@ -293,7 +316,6 @@ function createCustomer(Q, xPos, yPos) {
   };
   		  
   actor.add("homing, mortal, ai");
-  actor.p.rangeWeaponType = Q.StressBall;
   return actor;
 }
 
@@ -318,6 +340,5 @@ function createSalesPerson(Q, xPos, yPos) {
   });  
   		  
   actor.add("mortal, ai");
-  actor.p.rangeWeaponType = Q.StressBall;
   return actor;
 }

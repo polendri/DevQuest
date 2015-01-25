@@ -1,3 +1,72 @@
+// find the closest entity to the passed in entity
+// that satisfies predicate
+function findClosest(entity, predicate) {
+  if (!predicate) {
+    predicate = function(t) { return true; }
+  }
+  var p = entity.p;
+  var stage = entity.stage;
+  var closest = null;
+  var closestDistance = null;
+
+  for (var i = 0; i < stage.items.length; i++) {
+    var target = stage.items[i];
+
+    if (!predicate(target) || target === entity) {
+      continue;
+    }
+
+    var x = target.p.x - p.x;
+    var y = target.p.y - p.y;
+    var targetDistance = Math.sqrt(x*x + y*y);
+    
+    if (targetDistance > p.sight) {
+      continue;
+    }
+
+    if (closest === null) {
+      closest = target;
+      closestDistance = targetDistance;
+      continue;
+    }
+
+    if (targetDistance < closestDistance) {
+      closest = target;
+      closestDistance = targetDistance;
+    }
+  }
+
+  return closest;
+}
+
+function tryAttack(component, componentProps, dt) {
+    var e = component.entity
+    var p = e.p;
+
+    if (componentProps.cooldown > 0) {
+      componentProps.cooldown -= dt;
+      return;
+    }
+
+    if (!e.has('team')) {
+      return;
+    }
+
+    var target = findClosest(e, e.shouldTarget);
+
+    if (target === null) {
+      return;
+    }
+
+    var x = target.p.x - p.x;
+    var y = target.p.y - p.y;
+    var targetDistance = Math.sqrt(x*x + y*y);
+    
+    if (targetDistance <= componentProps.range) {
+      component.attack(target, x, y);
+    }
+}
+
 function initComponents(Q) {
     Q.component('camera', {
 
@@ -54,48 +123,48 @@ function initComponents(Q) {
     },
 
     // Find the closest other entity which satisfies the provided predicate.
-    _findClosest: function(homingPredicate) {
-      if (!homingPredicate) {
-        homingPredicate = function() { return true; }
-      }
-      var p = this.entity.p;
-      var stage = this.entity.stage;
-      var closest = null;
-      var closestDistance = null;
+    //_findClosest: function(homingPredicate) {
+      //if (!homingPredicate) {
+        //homingPredicate = function() { return true; }
+      //}
+      //var p = this.entity.p;
+      //var stage = this.entity.stage;
+      //var closest = null;
+      //var closestDistance = null;
 
-      for (var i = 0; i < stage.items.length; i++) {
-        var target = stage.items[i];
+      //for (var i = 0; i < stage.items.length; i++) {
+        //var target = stage.items[i];
 
-        if (!homingPredicate(target) || target === this.entity) {
-          continue;
-        }
+        //if (!homingPredicate(target) || target === this.entity) {
+          //continue;
+        //}
 
-        var x = target.p.x - p.x;
-        var y = target.p.y - p.y;
-        var targetDistance = Math.sqrt(x*x + y*y);
+        //var x = target.p.x - p.x;
+        //var y = target.p.y - p.y;
+        //var targetDistance = Math.sqrt(x*x + y*y);
         
-        if (targetDistance > p.sight) {
-          continue;
-        }
+        //if (targetDistance > p.sight) {
+          //continue;
+        //}
 
-        if (closest === null) {
-          closest = target;
-          closestDistance = targetDistance;
-          continue;
-        }
+        //if (closest === null) {
+          //closest = target;
+          //closestDistance = targetDistance;
+          //continue;
+        //}
 
-        if (targetDistance < closestDistance) {
-          closest = target;
-          closestDistance = targetDistance;
-        }
-      }
+        //if (targetDistance < closestDistance) {
+          //closest = target;
+          //closestDistance = targetDistance;
+        //}
+      //}
 
-      return closest;
-    },
+      //return closest;
+    //},
 
     _acquireTarget: function() {
       var p = this.entity.p;
-      p.target = this._findClosest(function(target) {
+      p.target = findClosest(this.entity, function(target) {
         return p.homingPredicate(target)
           && (!target.p.followerCount || target.p.followerCount < p.maxFollowers);
       });
@@ -254,6 +323,7 @@ function initComponents(Q) {
       // Take the specified damage and update accordingly.
       takeDamage: function(dmg) {
         this.p.health -= dmg;
+        console.log('health remaining: ' + this.p.health);
         if (this.p.health <= 0) {
           this.destroy();
         }
@@ -263,68 +333,57 @@ function initComponents(Q) {
 
   Q.component('ai', {});
 
-  //Q.component('meleeAttacker', {
-    //defaults: {
-      //power: 4,
-      //range: 3
-    //},
+  Q.component('meleeAttacker', {
+    defaults: {
+      power: 4,
+      range: 30,
+      cooldown: 1,
+    },
 
-    //added: function() {
-      //var p = this.entity.p.meleeAttack;
-      //Q._defaults(p, this.defaults);
-      //this.entity.on('step');
+    added: function() {
+      var p = this.entity.p;
+      p.meleeAttack = this.defaults;
+      this.entity.on('step', this, 'step');
       //this.entity.on('meleeAttackLanded');
-    //},
+    },
 
-    //step: function(dt) {
-      //var p = this.entity.p;
-    //},
+    step: function(dt) {
+      if (this.entity.has('ai') || Q.inputs["right"]) {
+        tryAttack(this, this.entity.p.meleeAttack, dt);
+      }
+    },
 
-    //meleeAttackLanded: function(dt) {
-      //var p = this.entity.p;
-    //},
-  //});
+    attack: function(target, dx, dy) {
+      var p = this.entity.p;
+      p.meleeAttack.cooldown = 1;
+
+      if (!target.has('mortal')) {
+        return;
+      }
+
+      target.takeDamage(p.meleeAttack.power);
+    },
+  });
 
   Q.component('rangeAttacker', {
     defaults: {
       power: 5,
       range: 200,
+      cooldown: 2
     },
 
     added: function() {
       var p = this.entity.p;
-      p.cooldown = 3;
+      p.rangeAttack = this.defaults;
 
-      Q._defaults(p, this.defaults);
+      //Q._defaults(p.rangeAttack, this.defaults);
       this.entity.on('step', this, 'step');
       //this.entity.on('rangeAttackLanded');
     },
 
     step: function(dt) {
-      var e = this.entity
-      var p = e.p;
-
-      if (p.cooldown > 0) {
-        p.cooldown -= dt;
-        return;
-      }
-
-      if (!(e.has('ai') && e.has('homing') && e.has('team'))) {
-        return;
-      }
-
-      var target = e['homing']._findClosest(function(t) { return t.has('team') && t.p.team != 'baddies' });
-
-      if (target === null) {
-        return;
-      }
-
-      var x = target.p.x - p.x;
-      var y = target.p.y - p.y;
-      var targetDistance = Math.sqrt(x*x + y*y);
-      
-      if (targetDistance <= p.range) {
-        this.fireRange(x, y);
+      if (this.entity.has('ai')) {
+        tryAttack(this, this.entity.p.rangeAttack, dt);
       }
     },
 
@@ -332,18 +391,18 @@ function initComponents(Q) {
       //var p = this.entity.p;
     //},
 
-    fireRange: function(dx, dy) {
+    attack: function(target, dx, dy) {
       var p = this.entity.p;
       var d = Math.sqrt(dx*dx + dy*dy);
       this.entity.stage.insert(
-        new p.rangeWeaponType({ 
+        new p.rangeAttack.weaponType({ 
           x: p.x + (p.w / 2), 
           y: p.y - (p.h / 2),
           vx: dx / (d / 100),
           vy: dy / (d / 100),
           src: this.entity
         }));
-      p.cooldown = 3;
-    }
+      p.rangeAttack.cooldown = 2;
+    },
   });
 }
