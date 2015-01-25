@@ -30,7 +30,6 @@ window.addEventListener('load',function() {
     'sprites/bug.png, ' +
     'sprites/customer.png, ' +
     'sprites/salesperson.png, ' +
-    'sprites/salesperson.png, ' +
     'sprites/stress_ball.png',
     function() {
       // Start the show

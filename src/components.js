@@ -324,6 +324,11 @@ function initComponents(Q) {
       takeDamage: function(dmg) {
         this.p.health -= dmg;
         console.log('health remaining: ' + this.p.health);
+        // XXX
+        if (this.p.team === "players") {
+          Q.stageScene('hud', 1, this.p);
+        }
+
         if (this.p.health <= 0) {
           this.destroy();
         }
@@ -335,7 +340,7 @@ function initComponents(Q) {
 
   Q.component('meleeAttacker', {
     defaults: {
-      power: 4,
+      power: 1,
       range: 30,
       cooldown: 1,
     },

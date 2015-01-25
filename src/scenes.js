@@ -1,4 +1,4 @@
-function initScenes(Q) {
+function initScenes(Q, player) {
   Q.scene("mainMenu", function(stage) {
     stage.insert(new Q.UI.Button(
     {
@@ -7,7 +7,8 @@ function initScenes(Q) {
       y: 500
     },
     function() {
-      Q.stageScene('game');
+      Q.stageScene('game', 0);
+      Q.stageScene('hud', 1, { health: 10 }); // XXX
     }));
     
     stage.insert(new Q.HoverSprite({
@@ -35,5 +36,13 @@ function initScenes(Q) {
     
   Q.scene("game",function(stage) {
     Q.stageTMX('stage1.tmx', stage);
+  });
+
+  Q.scene("hud", function(stage) {
+    var width = stage.options.health * Q.DEFAULT_CELL_WIDTH;
+    var height = Q.DEFAULT_CELL_HEIGHT;
+    stage.on('prerender', function(ctx) {
+      ctx.drawImage(Q.asset('ui/health_bar.png'), 0, 0, width, height, 10, 10, width, height);
+    });
   });
 }

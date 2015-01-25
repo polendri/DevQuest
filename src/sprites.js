@@ -131,7 +131,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("stepControls, rangeAttacker, meleeAttacker, camera");
+      this.add("stepControls, rangeAttacker, camera, mortal");
       
       // events
       Q.input.on("fire", this, "fireRange");
@@ -145,7 +145,7 @@ function initSprites(Q) {
       });
 
       this.p.rangeAttack.weaponType = Q.StressBall;
-      this.p.health = 40;
+      this.p.health = 10;
     },
 
     fireRange: function() {
@@ -327,7 +327,7 @@ function createBug(Q, xPos, yPos) {
     return t.has('team') && t.p.team != 'baddies';
   };
   
-  actor.add("homing, mortal, ai");
+  actor.add("homing, mortal, ai, meleeAttacker");
 
 
   actor.shouldTarget = actor.p.homingPredicate;
