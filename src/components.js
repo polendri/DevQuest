@@ -378,6 +378,7 @@ function initComponents(Q) {
   Q.component('mortal', {
     defaults: {
       health: 10,
+      maxHealth: 10,
     },
 
     added: function() {
@@ -398,7 +399,14 @@ function initComponents(Q) {
         if (this.p.health <= 0) {
           this.destroy();
         }
+      },
+
+      revive: function(health) {
+        this.p.health = Math.min(this.p.health + health, this.p.maxHealth);
+        Q.stageScene('hud', 1, this.p);
       }
+
+
     }
   });
 
@@ -425,6 +433,7 @@ function initComponents(Q) {
     },
 
     attack: function(target, dx, dy) {
+
       var p = this.entity.p;
       p.meleeAttack.cooldown = 1;
 

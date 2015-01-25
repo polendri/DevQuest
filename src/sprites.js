@@ -388,7 +388,7 @@ function createSushi(Q, xPos, yPos) {
   
   powerup.p.onPowerup = function(actor)
   {
-    actor.p.health += 4;
+    actor.revive(4);
   };
   		  
   return powerup;
