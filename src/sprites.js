@@ -96,7 +96,8 @@ function initSprites(Q) {
           }
         }
       });
-    }});
+    }
+  });
 
   Q.Actor.extend("Player",{
     init: function(props, defaultProps) {
@@ -129,6 +130,7 @@ function initSprites(Q) {
       defaultProps.h = Q.DEFAULT_CELL_HEIGHT;
       defaultProps.spawnCounter = 0;
       defaultProps.spawnTimeRemaining = 0;
+      this._super(props, defaultProps);
       
       // props for the editor
       // props.spawnInterval = 0.25;
@@ -136,13 +138,11 @@ function initSprites(Q) {
       // props.spawnRadius = 0;
       // props.probability = 1;
       
-      if (props.spawnTypes == null) {
-        props.spawnTypes = [ 'Bug' ];
-      } else if (typeof props.spawnTypes === 'string') {
-        props.spawnTypes = props.spawnTypes.split(',');
+      if (this.p.spawnTypes == null) {
+        this.p.spawnTypes = [ 'Bug' ];
+      } else if (typeof this.p.spawnTypes === 'string') {
+        this.p.spawnTypes = this.p.spawnTypes.split(',');
       } 
-      
-      this._super(props, defaultProps);
       
       this.add("2d");
     },
@@ -181,15 +181,52 @@ function initSprites(Q) {
         this.p.spawnCounter++;
         this.p.spawnTimeRemaining = this.p.spawnInterval;
       }
-    }});
+    }
+  });
     
-    Q.SpawnMapping = { };
-    Q.SpawnMapping['Bug'] = createBug;
-    Q.SpawnMapping['Customer'] = createCustomer;
-    Q.SpawnMapping['Sales Person'] = createSalesPerson;
-    Q.SpawnMapping['Coder'] = createCoder;
-    Q.SpawnMapping['Tester'] = createTester;
-    Q.SpawnMapping['Manager'] = createManager;
+  Q.Spawner.extend("BugSpawner", {
+    init: function(props, defaultProps) {
+      defaultProps = defaultProps || {};
+      defaultProps.spawnInterval = 2.0;
+      defaultProps.maximumSpawns = 3;
+      defaultProps.spawnRadius = 100;
+      defaultProps.probability = 0.25;
+      defaultProps.spawnTypes = ['Bug'];
+      this._super(props, defaultProps);
+    },
+  });
+
+  Q.Spawner.extend("SalespersonSpawner", {
+    init: function(props, defaultProps) {
+      defaultProps = defaultProps || {};
+      defaultProps.spawnInterval = 0.1;
+      defaultProps.maximumSpawns = 1;
+      defaultProps.spawnRadius = 0;
+      defaultProps.probability = 0.5;
+      defaultProps.spawnTypes = ['Sales Person'];
+      this._super(props, defaultProps);
+    },
+  });
+
+  Q.Spawner.extend("CustomerSpawner", {
+    init: function(props, defaultProps) {
+      defaultProps = defaultProps || {};
+      defaultProps.spawnInterval = 0.1;
+      defaultProps.maximumSpawns = 1;
+      defaultProps.spawnRadius = 0;
+      defaultProps.probability = 0.25;
+      defaultProps.spawnTypes = ['Customer'];
+      this._super(props, defaultProps);
+    },
+  });
+
+  Q.SpawnMapping = { };
+  Q.SpawnMapping['Bug'] = createBug;
+  Q.SpawnMapping['Customer'] = createCustomer;
+  Q.SpawnMapping['Sales Person'] = createSalesPerson;
+  Q.SpawnMapping['Coder'] = createCoder;
+  Q.SpawnMapping['Tester'] = createTester;
+  Q.SpawnMapping['Manager'] = createManager;
 }
 
 function createPlayer(Q, xPos, yPos) {
