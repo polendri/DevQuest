@@ -2,11 +2,6 @@
 <map version="1.0" orientation="orthogonal" width="41" height="500" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32">
   <image source="../images/tiles.png" width="128" height="320"/>
-  <tile id="16">
-   <properties>
-    <property name="sensor" value="true"/>
-   </properties>
-  </tile>
   <tile id="18">
    <properties>
     <property name="sensor" value="true"/>
@@ -17,32 +12,7 @@
     <property name="sensor" value="true"/>
    </properties>
   </tile>
-  <tile id="20">
-   <properties>
-    <property name="sensor" value="true"/>
-   </properties>
-  </tile>
-  <tile id="21">
-   <properties>
-    <property name="sensor" value="true"/>
-   </properties>
-  </tile>
-  <tile id="23">
-   <properties>
-    <property name="sensor" value="true"/>
-   </properties>
-  </tile>
-  <tile id="25">
-   <properties>
-    <property name="sensor" value="true"/>
-   </properties>
-  </tile>
   <tile id="28">
-   <properties>
-    <property name="sensor" value="true"/>
-   </properties>
-  </tile>
-  <tile id="29">
    <properties>
     <property name="sensor" value="true"/>
    </properties>
@@ -39189,11 +39159,11 @@
    <tile gid="17"/>
    <tile gid="17"/>
    <tile gid="17"/>
-   <tile gid="24"/>
+   <tile gid="35"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="26"/>
+   <tile gid="34"/>
    <tile gid="17"/>
    <tile gid="17"/>
    <tile gid="17"/>
@@ -40704,7 +40674,7 @@
    <tile gid="4"/>
    <tile gid="0"/>
    <tile gid="5"/>
-   <tile gid="11"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
