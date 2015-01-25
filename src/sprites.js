@@ -110,7 +110,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("stepControls, rangeAttacker");
+      this.add("stepControls, rangeAttacker, meleeAttacker, camera");
       
       // events
       Q.input.on("fire", this, "fireRange");
