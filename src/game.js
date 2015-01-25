@@ -20,6 +20,7 @@ window.addEventListener('load',function() {
 
   Q.loadTMX(
     'stage1.tmx, tiles.png, play_button.png, title.png, ' +
+    'ui/health_bar.png, ' +
     'sprites/sushi.png, ' +
     'sprites/potion.png, ' +
     'sprites/coffee.png, ' +
@@ -28,6 +29,7 @@ window.addEventListener('load',function() {
     'sprites/manager.png, ' +
     'sprites/bug.png, ' +
     'sprites/customer.png, ' +
+    'sprites/salesperson.png, ' +
     'sprites/salesperson.png, ' +
     'sprites/stress_ball.png',
     function() {
