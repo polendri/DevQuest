@@ -170,13 +170,15 @@ function initSprites(Q) {
       defaultProps.h = Q.DEFAULT_CELL_HEIGHT;
       defaultProps.spawnCounter = 0;
       defaultProps.spawnTimeRemaining = 0;
-      this._super(props, defaultProps);
       
       // props for the editor
       // props.spawnInterval = 0.25;
       // props.maximumSpawns = 10;
       // props.spawnRadius = 0;
       // props.probability = 1;
+      // props.sight = 1000;
+      
+      this._super(props, defaultProps);
       
       if (this.p.spawnTypes == null) {
         this.p.spawnTypes = [ 'Bug' ];
@@ -206,7 +208,13 @@ function initSprites(Q) {
 
       this.p.spawnTimeRemaining -= dt;
             
-      if (this.p.spawnTimeRemaining <= 0) {       
+      if (this.p.spawnTimeRemaining <= 0) {
+        if (this.p.sight > 0 && null == findClosest(this, function(target) {
+          return target.has('team') && target.p.team === 'players'; 
+        })) {
+          return;
+        }        
+        
         var chosenSpawnType = this.p.spawnTypes[Math.floor(Math.random() * this.p.spawnTypes.length)];
         var factoryFunction = Q.SpawnMapping[chosenSpawnType];
         
@@ -232,6 +240,7 @@ function initSprites(Q) {
       defaultProps.spawnRadius = 100;
       defaultProps.probability = 0.25;
       defaultProps.spawnTypes = ['Bug'];
+      defaultProps.sight = 200;
       this._super(props, defaultProps);
     },
   });
@@ -244,6 +253,7 @@ function initSprites(Q) {
       defaultProps.spawnRadius = 0;
       defaultProps.probability = 0.5;
       defaultProps.spawnTypes = ['Sales Person'];
+      defaultProps.sight = 1000;
       this._super(props, defaultProps);
     },
   });
@@ -256,6 +266,7 @@ function initSprites(Q) {
       defaultProps.spawnRadius = 0;
       defaultProps.probability = 0.25;
       defaultProps.spawnTypes = ['Customer'];
+      defaultProps.sight = 1000;
       this._super(props, defaultProps);
     },
   });
