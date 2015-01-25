@@ -90,7 +90,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("stepControls, rangeAttacker");
+      this.add("mortal, stepControls, rangeAttacker, camera");
       
       // events
       Q.input.on("fire", this, "fireRange");
@@ -164,11 +164,6 @@ function createPlayer(Q, xPos, yPos) {
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
     team: 'players',
   });  
-  		  
-  actor.add("mortal, stepControls");
-  
-  // xxx FILTHY HACK: replace this by using a camera component
-  Q.stage(0).add('viewport').follow(actor);
   
   return actor;
 }

@@ -1,9 +1,19 @@
 function initComponents(Q) {
+    Q.component('camera', {
+
+    added: function() {
+      var p = this.entity.p;
+      Q._defaults(p, this.defaults);
+      
+      Q.stage(0).add('viewport').follow(this.entity);
+    },
+  });
+  
 	Q.component('team', {
 	  defaults: {
-		team: 'Undefined',
+      team: 'Undefined',
 	  }
-    });
+  });
 	
 	Q.component('homing', {
     // Rotates coordinates by -pi/6 to convert them to the isometric
