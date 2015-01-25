@@ -81,10 +81,11 @@ function initSprites(Q) {
   Q.Actor.extend("Player",{
     init: function(props, defaultProps) {
       // property initialization
-      props.asset = 'sprites/coder.png';
-      props.team = 'players';
-      props.bulletSpeed = 100;
-      props.rangeWeaponType = Q.StressBall;
+      defaultProps = defaultProps || {};
+      defaultProps.asset = 'sprites/coder.png';
+      defaultProps.team = 'players';
+      defaultProps.bulletSpeed = 100;
+      defaultProps.rangeWeaponType = Q.StressBall;
       
       // base class initialization
       this._super(props, defaultProps);
@@ -103,10 +104,11 @@ function initSprites(Q) {
     
   Q.Sprite.extend("Spawner", {
     init: function(props, defaultProps) {
-      props.w = Q.DEFAULT_CELL_WIDTH;
-      props.h = Q.DEFAULT_CELL_HEIGHT;
-      props.spawnCounter = 0;
-      props.spawnTimeRemaining = 0;
+      defaultProps = defaultProps || {};
+      defaultProps.w = Q.DEFAULT_CELL_WIDTH;
+      defaultProps.h = Q.DEFAULT_CELL_HEIGHT;
+      defaultProps.spawnCounter = 0;
+      defaultProps.spawnTimeRemaining = 0;
       
       // props for the editor
       // props.spawnInterval = 0.25;
