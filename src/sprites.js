@@ -109,9 +109,10 @@ function initSprites(Q) {
       props.spawnTimeRemaining = 0;
       
       // props for the editor
-      props.spawnInterval = 0.25;
+      // props.spawnInterval = 0.25;
       // props.maximumSpawns = 10;
       // props.spawnRadius = 0;
+      // props.probability = 1;
       
       if (props.spawnTypes == null) {
         props.spawnTypes = [ 'Bug' ];
@@ -125,13 +126,24 @@ function initSprites(Q) {
     },
     
     step: function(dt) {
+      // randomized chance that this thing shouldn't even exist
+      if (!this.p.checkShouldExist) {
+        this.p.checkShouldExist = true;
+        
+        if (this.p.probability < Math.random()) {
+          this.destroy();
+          return;
+        }
+      }
+      
+      // check if we've exceeded our limit
       if (this.p.maximumSpawns <= this.p.spawnCounter) {
         this.destroy();
         return;
       }
 
       this.p.spawnTimeRemaining -= dt;
-      
+            
       if (this.p.spawnTimeRemaining <= 0) {       
         var chosenSpawnType = this.p.spawnTypes[Math.floor(Math.random() * this.p.spawnTypes.length)];
         var factoryFunction = Q.SpawnMapping[chosenSpawnType];

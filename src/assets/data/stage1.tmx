@@ -41036,6 +41036,8 @@
     <property name="spawnTypes" value="Manager"/>
     <property name="spawnRadius" value="50"/>
     <property name="maximumSpawns" value="1"/>
+    <property name="probability" value="1"/>
+    <property name="spawnInterval" value="0.25"/>
    </properties>
   </object>
   <object name="enemySpawner" gid="1" x="640" y="15488">
@@ -41044,6 +41046,8 @@
     <property name="spawnTypes" value="Bug,Customer,Sales Person"/>
     <property name="spawnRadius" value="100"/>
     <property name="maximumSpawns" value="10"/>
+    <property name="probability" value="0.5"/>
+    <property name="spawnInterval" value="0.25"/>
    </properties>
   </object>
  </objectgroup>
