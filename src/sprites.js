@@ -131,7 +131,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("stepControls, rangeAttacker, camera, mortal");
+      this.add("peasantControls, rangeAttacker, camera, mortal");
       
       // events
       Q.input.on("fire", this, "fireRange");
@@ -288,6 +288,7 @@ function createPlayer(Q, xPos, yPos) {
     x: xPos * Q.DEFAULT_CELL_WIDTH,
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
     team: 'players',
+    speed: 200,
   });  
   
   return actor;
@@ -402,7 +403,7 @@ function createPotion(Q, xPos, yPos) {
   
   powerup.p.onPowerup = function(actor)
   {
-    actor.p.stepDelay *= 0.75;
+    actor.p.speed *= 1.25;
   };
   		  
   return powerup;
@@ -417,7 +418,7 @@ function createCoffee(Q, xPos, yPos) {
   
   powerup.p.onPowerup = function(actor)
   {
-    actor.p.stepDelay *= 0.90;
+    actor.p.speed += 10;
   };
   		  
   return powerup;

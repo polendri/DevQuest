@@ -68,7 +68,62 @@ function tryAttack(component, componentProps, dt) {
 }
 
 function initComponents(Q) {
-    Q.component('camera', {
+  Q.component("peasantControls", {
+ 
+    added: function() {
+      var p = this.entity.p;
+ 
+      if (!p.speed) { p.speed = 32; }
+      
+      this.entity.on("step",this,"step");
+      this.entity.on("hit", this,"collision");
+    },
+ 
+    collision: function(col) {
+      var p = this.entity.p;
+ 
+      if (p.stepping) {
+        p.stepping = false;
+      } 
+    },
+ 
+    step: function(dt) {
+      var p = this.entity.p;
+ 
+      if (p.stepping) {
+        p.x += p.velocityX * dt;
+        p.y += p.velocityY * dt;
+      }
+        
+      if(Q.inputs['left']) {
+        p.velocityX = -p.speed;
+      } else if(Q.inputs['right']) {
+        p.velocityX = p.speed;
+      } else {
+        p.velocityX = 0;
+      }
+ 
+      if (Q.inputs['up']) {
+        p.velocityY = -p.speed;
+      } else if(Q.inputs['down']) {
+        p.velocityY = p.speed;
+      } else {
+        p.velocityY = 0;
+      }
+      
+      if (p.velocityX) {
+        p.velocityY /= (Math.sqrt(p.velocityY * p.velocityY + p.velocityX * p.velocityX) / p.speed);
+      }
+      
+      if (p.velocityY) {
+        p.velocityX /= (Math.sqrt(p.velocityY * p.velocityY + p.velocityX * p.velocityX) / p.speed);
+      }
+ 
+      p.stepping = p.velocityX || p.velocityY;
+    } 
+  });
+  
+  Q.component('camera', {
 
     added: function() {
       var p = this.entity.p;
