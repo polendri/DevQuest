@@ -1,6 +1,27 @@
 function initSprites(Q) {
   Q.DEFAULT_CELL_WIDTH = 32;
   Q.DEFAULT_CELL_HEIGHT = 32;
+
+  Q.Sprite.extend("Powerup", {
+    init: function(p) {
+      p.onPowerup = function(actor) { };
+      
+      this._super(p, {});
+      
+      this.add("2d");
+      
+      this.on("hit.sprite", this, "collision");
+    },
+
+    collision: function(col) {
+      var target = col.obj;
+      
+      if (target.has('team') && target.p.team === 'players') {
+        this.p.onPowerup(target);
+        this.destroy();
+      }
+    },
+  });
   
   Q.Sprite.extend("WinCondition", {
     init: function(p) {
@@ -246,6 +267,9 @@ function initSprites(Q) {
   Q.SpawnMapping['Coder'] = createCoder;
   Q.SpawnMapping['Tester'] = createTester;
   Q.SpawnMapping['Manager'] = createManager;
+  Q.SpawnMapping['Sushi'] = createSushi;
+  Q.SpawnMapping['Potion'] = createPotion;
+  Q.SpawnMapping['Coffee'] = createCoffee;
 }
 
 function createPlayer(Q, xPos, yPos) {
@@ -341,4 +365,49 @@ function createSalesPerson(Q, xPos, yPos) {
   		  
   actor.add("mortal, ai");
   return actor;
+}
+
+function createSushi(Q, xPos, yPos) {
+  var powerup = new Q.Powerup({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    asset: 'sprites/sushi.png',
+  });
+  
+  powerup.p.onPowerup = function(actor)
+  {
+    actor.p.health += 4;
+  };
+  		  
+  return powerup;
+}
+
+function createPotion(Q, xPos, yPos) {
+  var powerup = new Q.Powerup({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    asset: 'sprites/potion.png',
+  });
+  
+  powerup.p.onPowerup = function(actor)
+  {
+    actor.p.stepDelay *= 0.75;
+  };
+  		  
+  return powerup;
+}
+
+function createCoffee(Q, xPos, yPos) {
+  var powerup = new Q.Powerup({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    asset: 'sprites/coffee.png',
+  });
+  
+  powerup.p.onPowerup = function(actor)
+  {
+    actor.p.stepDelay *= 0.90;
+  };
+  		  
+  return powerup;
 }

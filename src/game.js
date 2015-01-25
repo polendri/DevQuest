@@ -20,6 +20,9 @@ window.addEventListener('load',function() {
 
   Q.loadTMX(
     'stage1.tmx, tiles.png, play_button.png, title.png, ' +
+    'sprites/sushi.png, ' +
+    'sprites/potion.png, ' +
+    'sprites/coffee.png, ' +
     'sprites/coder.png, ' +
     'sprites/tester.png, ' +
     'sprites/manager.png, ' +

@@ -41035,6 +41035,15 @@
     <property name="Class" value="WinCondition"/>
    </properties>
   </object>
+  <object name="powerupSpawner" gid="1" x="640" y="15772">
+   <properties>
+    <property name="Class" value="Spawner"/>
+    <property name="maximumSpawns" value="3"/>
+    <property name="spawnRadius" value="50"/>
+    <property name="spawnInterval" value="0.1"/>
+    <property name="spawnTypes" value="Sushi,Coffee,Potion"/>
+   </properties>
+  </object>
   <object name="playerSpawner" gid="1" x="640" y="15872">
    <properties>
     <property name="Class" value="Spawner"/>
