@@ -24,7 +24,7 @@ function initScenes(Q) {
       x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.25)"
     }));
     
-    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC", label: "Main Menu" }))         
+    var button = box.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC", label: "Agree" }))         
     var label = box.insert(new Q.UI.Text({x:10, y: -10 - button.p.h, label: stage.options.label }));
     button.on("click",function() {
       Q.clearStages();
