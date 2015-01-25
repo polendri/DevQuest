@@ -74,7 +74,18 @@ function initComponents(Q) {
       var p = this.entity.p;
       Q._defaults(p, this.defaults);
       
-      Q.stage(0).add('viewport').follow(this.entity);
+      Q.stage(0).add('viewport').follow(
+        this.entity,
+        {
+          x: false,
+          y: true
+        },
+        {
+          minX: 0, 
+          maxX: 42 * 32,
+          minY: 0,
+          maxY: 500 * 32
+        });
     },
   });
   
