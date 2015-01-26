@@ -391,9 +391,19 @@ function createPotion(Q, xPos, yPos) {
   powerup.p.onPowerup = function(actor)
   {
     var buff = {
-      remaining: 5,
+      remaining: 6,
       onAdded: function(target) { target.p.speed *= 1.5; },
-      onRemoved: function(target) { target.p.speed /= 1.5; },
+      onRemoved: function(target) { 
+        target.p.speed /= 1.5; 
+        
+        var debuff = {
+          remaining: 2,
+          onAdded: function(target) { target.p.speed *= 0.75; },
+          onRemoved: function(target) { target.p.speed /= 0.75; },
+        };
+        
+        target.addBuff(debuff);
+      },
     };
     
     actor.addBuff(buff);
