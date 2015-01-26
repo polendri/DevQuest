@@ -65,7 +65,8 @@ function initSprites(Q) {
     init: function(p) {
       this._super(p, {
         power: 3,
-        asset: "sprites/stress_ball.png"
+        asset: "sprites/stress_ball.png",
+        lifetime: 10,
       });
 
       this.add("2d");
@@ -74,9 +75,10 @@ function initSprites(Q) {
 
     collision: function(col) {
       var target = col.obj;
-      if (target === this.p.src) {
+      if (target === this.p.src || target.isA('StressBall')) {
         return;
       }
+      
       if (target.has('mortal')) {
         target.takeDamage(this.p.power);
       }
@@ -84,14 +86,13 @@ function initSprites(Q) {
       this.destroy();
     },
 
-    //draw: function(ctx) {
-      //ctx.fillStyle = "#111";
-      //ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
-    //},
-
     step: function(dt) {
-      if(!Q.overlap(this,this.stage)) {
-        this.destroy();
+      this.p.lifetime -= dt;
+            
+      if(!Q.overlap(this, this.stage) ||
+         this.p.lifetime <= 0 ||
+         (this.p.vx == 0 && this.p.vy == 0)) {
+         this.destroy();
       }
     }
   });
