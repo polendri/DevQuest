@@ -68,6 +68,62 @@ function tryAttack(component, componentProps, dt) {
 }
 
 function initComponents(Q) {
+  Q.component('buffable', {
+    extend: {
+      addBuff: function(buff) {        
+        var p = this.p;
+        p.buffs.push(buff);
+        
+        if (buff.onAdded) {
+          buff.onAdded(this);
+        }
+      },
+
+      removeBuff: function(buff) {              
+        var p = this.p;
+      
+        var removed = false;
+        for (i = 0; i < p.buffs.length; i++) {       
+          if (p.buffs[i] === buff) {
+            p.buffs.splice(i, 1);
+            removed = true;
+          }
+        }
+        
+        if (!removed) {
+          return;
+        }
+        
+        if (buff.onRemoved) {
+          buff.onRemoved(this);
+        }
+      },
+    },
+    
+    added: function() {
+      var p = this.entity.p;
+      
+      Q._defaults(p, this.defaults);
+      
+      this.entity.on('step', this, 'step');
+      
+      p.buffs = [ ];
+    },
+
+    step: function(dt) {
+      var p = this.entity.p;
+
+      for (i = 0; i < p.buffs.length; i++) { 
+        p.buffs[i].remaining -= dt;
+        
+        if (p.buffs[i].remaining <= 0) {
+          this.entity.removeBuff(p.buffs[i]);
+          i--;
+        }
+      }
+    },
+  });
+  
   Q.component("peasantControls", {
  
     added: function() {
@@ -404,9 +460,7 @@ function initComponents(Q) {
       revive: function(health) {
         this.p.health = Math.min(this.p.health + health, this.p.maxHealth);
         Q.stageScene('hud', 1, this.p);
-      }
-
-
+      },
     }
   });
 

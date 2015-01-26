@@ -16,7 +16,7 @@ function initSprites(Q) {
     collision: function(col) {
       var target = col.obj;
       
-      if (target.has('team') && target.p.team === 'players') {
+      if (target.has('buffable')) {
         this.p.onPowerup(target);
         this.destroy();
       }
@@ -107,15 +107,6 @@ function initSprites(Q) {
 
       // components
       this.add("2d, team");
-
-      //this.on("bump.left,bump.right,bump.bottom,bump.top",function(collision) {
-        //if (this.p.team != 'players' && collision.obj.has('team')) { 
-          //if (collision.obj.p.team != this.p.team) {
-            //Q.stageScene("endGame",1, { label: "You're basically the worst." });
-            //collision.obj.destroy();
-          //}
-        //}
-      //});
     }});
 
   Q.Actor.extend("Player",{
@@ -131,7 +122,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("peasantControls, rangeAttacker, camera, mortal");
+      this.add("peasantControls, rangeAttacker, camera, mortal, buffable");
       
       // events
       Q.input.on("fire", this, "fireRange");
@@ -403,7 +394,13 @@ function createPotion(Q, xPos, yPos) {
   
   powerup.p.onPowerup = function(actor)
   {
-    actor.p.speed *= 1.25;
+    var buff = {
+      remaining: 5,
+      onAdded: function(target) { target.p.speed *= 1.5; },
+      onRemoved: function(target) { target.p.speed /= 1.5; },
+    };
+    
+    actor.addBuff(buff);
   };
   		  
   return powerup;
@@ -418,7 +415,13 @@ function createCoffee(Q, xPos, yPos) {
   
   powerup.p.onPowerup = function(actor)
   {
-    actor.p.speed += 10;
+    var buff = {
+      remaining: 5,
+      onAdded: function(target) { target.p.speed *= 1.25; },
+      onRemoved: function(target) { target.p.speed /= 1.25; },
+    };
+    
+    actor.addBuff(buff);
   };
   		  
   return powerup;
