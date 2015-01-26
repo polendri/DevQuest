@@ -153,11 +153,10 @@ function initSprites(Q) {
   Q.Sprite.extend("Spawner", {
     init: function(props, defaultProps) {
       defaultProps = defaultProps || {};
-      defaultProps.w = Q.DEFAULT_CELL_WIDTH;
-      defaultProps.h = Q.DEFAULT_CELL_HEIGHT;
+      defaultProps.w = 0; // XXX hack; this is to disable collisions, I tried using collisionMask
+      defaultProps.h = 0; // but it didn't seem to work.
       defaultProps.spawnCounter = 0;
       defaultProps.spawnTimeRemaining = 0;
-      defaultProps.collisionMask = Q.SPRITE_NONE;
       
       // props for the editor
       // props.spawnInterval = 0.25;
@@ -167,6 +166,7 @@ function initSprites(Q) {
       // props.sight = 1000;
       
       this._super(props, defaultProps);
+      this.add("2d");
       
       if (this.p.spawnTypes == null) {
         this.p.spawnTypes = [ 'Bug' ];
