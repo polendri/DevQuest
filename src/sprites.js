@@ -307,6 +307,7 @@ function createBug(Q, xPos, yPos) {
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
     asset: 'sprites/bug.png',
     team: 'baddies',
+    speed: 100
   });  
   		
   actor.p.homingPredicate = function(t) {
@@ -328,7 +329,7 @@ function createCustomer(Q, xPos, yPos) {
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
     asset: 'sprites/customer.png',
     team: 'baddies',
-    speed: 75,
+    speed: 150,
     sight: 200,
   });  
   
