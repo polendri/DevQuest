@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="41" height="500" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32">
-  <image source="../images/tiles.png" width="128" height="320"/>
+  <image source="../images/tiles.png" width="128" height="352"/>
   <tile id="18">
    <properties>
     <property name="sensor" value="true"/>
@@ -13,6 +13,36 @@
    </properties>
   </tile>
   <tile id="28">
+   <properties>
+    <property name="sensor" value="true"/>
+   </properties>
+  </tile>
+  <tile id="38">
+   <properties>
+    <property name="sensor" value="true"/>
+   </properties>
+  </tile>
+  <tile id="39">
+   <properties>
+    <property name="sensor" value="true"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="sensor" value="true"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="sensor" value="true"/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="sensor" value="true"/>
+   </properties>
+  </tile>
+  <tile id="43">
    <properties>
     <property name="sensor" value="true"/>
    </properties>
@@ -20522,7 +20552,7 @@
    <tile gid="12"/>
   </data>
  </layer>
- <layer name="Cubicles" width="41" height="500">
+ <layer name="Furniture" width="41" height="500">
   <properties>
    <property name="collision" value="true"/>
   </properties>
@@ -39037,9 +39067,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="39"/>
+   <tile gid="40"/>
+   <tile gid="41"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -39078,9 +39108,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="42"/>
+   <tile gid="43"/>
+   <tile gid="44"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -41029,18 +41059,13 @@
    <tile gid="20"/>
   </data>
  </layer>
- <objectgroup name="Object Layer" width="41" height="500">
-  <object name="WinCondition" gid="1" x="640" y="14488">
-   <properties>
-    <property name="Class" value="WinCondition"/>
-   </properties>
-  </object>
+ <objectgroup name="Objects" width="41" height="500">
   <object name="powerupSpawner" gid="1" x="640" y="15772">
    <properties>
     <property name="Class" value="Spawner"/>
     <property name="maximumSpawns" value="3"/>
-    <property name="spawnRadius" value="50"/>
     <property name="spawnInterval" value="0.1"/>
+    <property name="spawnRadius" value="50"/>
     <property name="spawnTypes" value="Sushi,Coffee,Potion"/>
    </properties>
   </object>
@@ -41270,6 +41295,13 @@
   <object type="CustomerSpawner" gid="1" x="640" y="14624">
    <properties>
     <property name="Class" value="CustomerSpawner"/>
+   </properties>
+  </object>
+  <object type="WinCondition" x="576" y="14400" width="160" height="128">
+   <properties>
+    <property name="Class" value="WinCondition"/>
+    <property name="h" value="128"/>
+    <property name="w" value="160"/>
    </properties>
   </object>
  </objectgroup>

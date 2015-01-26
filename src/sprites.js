@@ -25,12 +25,8 @@ function initSprites(Q) {
   
   Q.Sprite.extend("WinCondition", {
     init: function(p) {
-      p.asset = 'sprites/bug.png';
-      
-      this._super(p, {});
-      
-      this.add("2d");
-      
+      p.y += p.h;
+      this._super(p);
       this.on("hit.sprite", this, "collision");
     },
 
