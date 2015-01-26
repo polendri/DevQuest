@@ -157,6 +157,7 @@ function initSprites(Q) {
       defaultProps.h = Q.DEFAULT_CELL_HEIGHT;
       defaultProps.spawnCounter = 0;
       defaultProps.spawnTimeRemaining = 0;
+      defaultProps.collisionMask = Q.SPRITE_NONE;
       
       // props for the editor
       // props.spawnInterval = 0.25;
@@ -172,8 +173,6 @@ function initSprites(Q) {
       } else if (typeof this.p.spawnTypes === 'string') {
         this.p.spawnTypes = this.p.spawnTypes.split(',');
       } 
-      
-      this.add("2d");
     },
     
     step: function(dt) {
