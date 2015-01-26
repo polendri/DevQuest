@@ -137,7 +137,24 @@ function initSprites(Q) {
     },
 
     fireRange: function() {
-      this['rangeAttacker'].attack(null, 1, 0);
+      var dx = 0;
+      var dy = 0;
+      
+      if (this.p.facing === 'front') {
+        dx = 0;
+        dy = 1;
+      } else if (this.p.facing === 'front') {
+        dx = 0;
+        dy = 1;
+      } else if (this.p.facing === 'left') {
+        dx = -1;
+        dy = 0;
+      } else if (this.p.facing === 'right') {
+        dx = 1;
+        dy = 0;
+      }
+      
+      this['rangeAttacker'].attack(null, dx, dy);
     },
 
     destroy: function() {

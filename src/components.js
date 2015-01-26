@@ -152,16 +152,20 @@ function initComponents(Q) {
       }
         
       if(Q.inputs['left']) {
+        p.facing = 'left';
         p.velocityX = -p.speed;
       } else if(Q.inputs['right']) {
+        p.facing = 'right';
         p.velocityX = p.speed;
       } else {
         p.velocityX = 0;
       }
  
       if (Q.inputs['up']) {
+        p.facing = 'back';
         p.velocityY = -p.speed;
       } else if(Q.inputs['down']) {
+        p.facing = 'front';
         p.velocityY = p.speed;
       } else {
         p.velocityY = 0;
@@ -530,8 +534,8 @@ function initComponents(Q) {
       var d = Math.sqrt(dx*dx + dy*dy);
       this.entity.stage.insert(
         new p.rangeAttack.weaponType({ 
-          x: p.x + (p.w / 2), 
-          y: p.y - (p.h / 2),
+          x: p.x + Math.sign(dx) * (p.w / 2), 
+          y: p.y + Math.sign(dy) * (p.h / 2),
           vx: dx / (d / 100),
           vy: dy / (d / 100),
           src: this.entity
