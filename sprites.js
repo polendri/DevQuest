@@ -1,6 +1,6 @@
 function initSprites(Q) {
-  Q.DEFAULT_CELL_WIDTH = 32;
-  Q.DEFAULT_CELL_HEIGHT = 32;
+  Q.DEFAULT_CELL_WIDTH = 64;
+  Q.DEFAULT_CELL_HEIGHT = 64;
 
   Q.Sprite.extend("Powerup", {
     init: function(p) {
@@ -65,7 +65,8 @@ function initSprites(Q) {
     init: function(p) {
       this._super(p, {
         power: 3,
-        asset: "sprites/stress_ball.png"
+        asset: "sprites/stress_ball.png",
+        lifetime: 10,
       });
 
       this.add("2d");
@@ -74,9 +75,10 @@ function initSprites(Q) {
 
     collision: function(col) {
       var target = col.obj;
-      if (target === this.p.src) {
+      if (target === this.p.src || target.isA('StressBall')) {
         return;
       }
+      
       if (target.has('mortal')) {
         target.takeDamage(this.p.power);
       }
@@ -84,14 +86,13 @@ function initSprites(Q) {
       this.destroy();
     },
 
-    //draw: function(ctx) {
-      //ctx.fillStyle = "#111";
-      //ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
-    //},
-
     step: function(dt) {
-      if(!Q.overlap(this,this.stage)) {
-        this.destroy();
+      this.p.lifetime -= dt;
+            
+      if(!Q.overlap(this, this.stage) ||
+         this.p.lifetime <= 0 ||
+         (this.p.vx == 0 && this.p.vy == 0)) {
+         this.destroy();
       }
     }
   });
@@ -111,7 +112,7 @@ function initSprites(Q) {
       defaultProps = defaultProps || {};
       defaultProps.asset = 'sprites/coder.png';
       defaultProps.team = 'players';
-      defaultProps.bulletSpeed = 100;
+      defaultProps.bulletSpeed = 400;
       defaultProps.rangeWeaponType = Q.StressBall;
       
       // base class initialization
@@ -136,7 +137,24 @@ function initSprites(Q) {
     },
 
     fireRange: function() {
-      this['rangeAttacker'].attack(null, 1, 0);
+      var dx = 0;
+      var dy = 0;
+      
+      if (this.p.facing === 'front') {
+        dx = 0;
+        dy = 1;
+      } else if (this.p.facing === 'front') {
+        dx = 0;
+        dy = 1;
+      } else if (this.p.facing === 'left') {
+        dx = -1;
+        dy = 0;
+      } else if (this.p.facing === 'right') {
+        dx = 1;
+        dy = 0;
+      }
+      
+      this['rangeAttacker'].attack(null, dx, dy);
     },
 
     destroy: function() {
@@ -223,10 +241,10 @@ function initSprites(Q) {
       defaultProps = defaultProps || {};
       defaultProps.spawnInterval = 2.0;
       defaultProps.maximumSpawns = 3;
-      defaultProps.spawnRadius = 100;
+      defaultProps.spawnRadius = 200;
       defaultProps.probability = 0.25;
       defaultProps.spawnTypes = ['Bug'];
-      defaultProps.sight = 200;
+      defaultProps.sight = 400;
       this._super(props, defaultProps);
     },
   });
@@ -239,7 +257,7 @@ function initSprites(Q) {
       defaultProps.spawnRadius = 0;
       defaultProps.probability = 0.5;
       defaultProps.spawnTypes = ['Sales Person'];
-      defaultProps.sight = 1000;
+      defaultProps.sight = 2000;
       this._super(props, defaultProps);
     },
   });
@@ -252,7 +270,7 @@ function initSprites(Q) {
       defaultProps.spawnRadius = 0;
       defaultProps.probability = 0.25;
       defaultProps.spawnTypes = ['Customer'];
-      defaultProps.sight = 1000;
+      defaultProps.sight = 2000;
       this._super(props, defaultProps);
     },
   });
@@ -274,7 +292,7 @@ function createPlayer(Q, xPos, yPos) {
     x: xPos * Q.DEFAULT_CELL_WIDTH,
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
     team: 'players',
-    speed: 200,
+    speed: 400,
   });  
   
   return actor;
@@ -391,9 +409,19 @@ function createPotion(Q, xPos, yPos) {
   powerup.p.onPowerup = function(actor)
   {
     var buff = {
-      remaining: 5,
+      remaining: 6,
       onAdded: function(target) { target.p.speed *= 1.5; },
-      onRemoved: function(target) { target.p.speed /= 1.5; },
+      onRemoved: function(target) { 
+        target.p.speed /= 1.5; 
+        
+        var debuff = {
+          remaining: 2,
+          onAdded: function(target) { target.p.speed *= 0.75; },
+          onRemoved: function(target) { target.p.speed /= 0.75; },
+        };
+        
+        target.addBuff(debuff);
+      },
     };
     
     actor.addBuff(buff);

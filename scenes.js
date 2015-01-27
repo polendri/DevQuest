@@ -39,8 +39,8 @@ function initScenes(Q, player) {
   });
 
   Q.scene("hud", function(stage) {
-    var width = stage.options.health * Q.DEFAULT_CELL_WIDTH;
-    var height = Q.DEFAULT_CELL_HEIGHT;
+    var width = stage.options.health * 32;
+    var height = 32;
     stage.on('prerender', function(ctx) {
       ctx.drawImage(Q.asset('ui/health_bar.png'), 0, 0, width, height, 10, 10, width, height);
     });
