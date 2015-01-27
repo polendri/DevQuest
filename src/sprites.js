@@ -103,7 +103,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
 
       // components
-      this.add("2d, team");
+      this.add("propelled, 2d, team");
     }});
 
   Q.Actor.extend("Player",{
@@ -119,7 +119,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("peasantControls, rangeAttacker, camera, mortal, buffable");
+      this.add("controls, rangeAttacker, camera, mortal, buffable");
       
       // events
       Q.input.on("fire", this, "fireRange");
@@ -291,8 +291,6 @@ function createPlayer(Q, xPos, yPos) {
   var actor = new Q.Player({
     x: xPos * Q.DEFAULT_CELL_WIDTH,
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
-    team: 'players',
-    speed: 400,
   });  
   
   return actor;
