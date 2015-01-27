@@ -192,14 +192,14 @@ function initComponents(Q) {
       Q.stage(0).add('viewport').follow(
         this.entity,
         {
-          x: false,
+          x: true,
           y: true
         },
         {
           minX: 0, 
-          maxX: 42 * 32,
+          maxX: 42 * 64,
           minY: 0,
-          maxY: 500 * 32
+          maxY: 500 * 64
         });
     },
   });
@@ -343,7 +343,7 @@ function initComponents(Q) {
       // Whether or not homing is active.
       homingActive: false,
       // Used to know how far a target can be found
-      sight: 100,
+      sight: 300,
     },
 
     added: function() {
@@ -506,7 +506,7 @@ function initComponents(Q) {
   Q.component('rangeAttacker', {
     defaults: {
       power: 5,
-      range: 200,
+      range: 400,
       cooldown: 2
     },
 

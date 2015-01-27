@@ -1,6 +1,6 @@
 function initSprites(Q) {
-  Q.DEFAULT_CELL_WIDTH = 32;
-  Q.DEFAULT_CELL_HEIGHT = 32;
+  Q.DEFAULT_CELL_WIDTH = 64;
+  Q.DEFAULT_CELL_HEIGHT = 64;
 
   Q.Sprite.extend("Powerup", {
     init: function(p) {
@@ -112,7 +112,7 @@ function initSprites(Q) {
       defaultProps = defaultProps || {};
       defaultProps.asset = 'sprites/coder.png';
       defaultProps.team = 'players';
-      defaultProps.bulletSpeed = 100;
+      defaultProps.bulletSpeed = 400;
       defaultProps.rangeWeaponType = Q.StressBall;
       
       // base class initialization
@@ -241,10 +241,10 @@ function initSprites(Q) {
       defaultProps = defaultProps || {};
       defaultProps.spawnInterval = 2.0;
       defaultProps.maximumSpawns = 3;
-      defaultProps.spawnRadius = 100;
+      defaultProps.spawnRadius = 200;
       defaultProps.probability = 0.25;
       defaultProps.spawnTypes = ['Bug'];
-      defaultProps.sight = 200;
+      defaultProps.sight = 400;
       this._super(props, defaultProps);
     },
   });
@@ -257,7 +257,7 @@ function initSprites(Q) {
       defaultProps.spawnRadius = 0;
       defaultProps.probability = 0.5;
       defaultProps.spawnTypes = ['Sales Person'];
-      defaultProps.sight = 1000;
+      defaultProps.sight = 2000;
       this._super(props, defaultProps);
     },
   });
@@ -270,7 +270,7 @@ function initSprites(Q) {
       defaultProps.spawnRadius = 0;
       defaultProps.probability = 0.25;
       defaultProps.spawnTypes = ['Customer'];
-      defaultProps.sight = 1000;
+      defaultProps.sight = 2000;
       this._super(props, defaultProps);
     },
   });
@@ -292,7 +292,7 @@ function createPlayer(Q, xPos, yPos) {
     x: xPos * Q.DEFAULT_CELL_WIDTH,
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
     team: 'players',
-    speed: 200,
+    speed: 400,
   });  
   
   return actor;
