@@ -103,15 +103,15 @@ function initSprites(Q) {
       this._super(props, defaultProps);
 
       // components
-      this.add("2d, team");
+      this.add("propelled, 2d, team");
     }});
 
   Q.Actor.extend("Player",{
     init: function(props, defaultProps) {
       // property initialization
       defaultProps = defaultProps || {};
-      defaultProps.asset = 'sprites/coder.png';
       defaultProps.team = 'players';
+      defaultProps.speed = 300;
       defaultProps.bulletSpeed = 400;
       defaultProps.rangeWeaponType = Q.StressBall;
       
@@ -119,7 +119,7 @@ function initSprites(Q) {
       this._super(props, defaultProps);
       
       // components
-      this.add("peasantControls, rangeAttacker, camera, mortal, buffable");
+      this.add("controls, animation, rangeAttacker, camera, mortal, buffable");
       
       // events
       Q.input.on("fire", this, "fireRange");
@@ -134,6 +134,16 @@ function initSprites(Q) {
 
       this.p.rangeAttack.weaponType = Q.StressBall;
       this.p.health = 10;
+    },
+
+    step: function(dt) {
+      if (!this.p.animation || this.p.animation.indexOf("striking_") != 0) {
+        if (!this.p.propelled) {
+          this.play("idle_" + this.p.facing);
+        } else {
+          this.play("running_" + this.p.facing);
+        }
+      }
     },
 
     fireRange: function() {
@@ -155,6 +165,7 @@ function initSprites(Q) {
       }
       
       this['rangeAttacker'].attack(null, dx, dy);
+      this.play("striking_" + this.p.facing);
     },
 
     destroy: function() {
@@ -291,8 +302,6 @@ function createPlayer(Q, xPos, yPos) {
   var actor = new Q.Player({
     x: xPos * Q.DEFAULT_CELL_WIDTH,
     y: yPos * Q.DEFAULT_CELL_HEIGHT,
-    team: 'players',
-    speed: 400,
   });  
   
   return actor;
@@ -313,8 +322,12 @@ function createTester(Q, xPos, yPos) {
 }
 
 function createManager(Q, xPos, yPos) {
-  var actor = createPlayer(Q, xPos, yPos);
-  actor.p.asset = 'sprites/manager.png';
+  var actor = new Q.Player({
+    x: xPos * Q.DEFAULT_CELL_WIDTH,
+    y: yPos * Q.DEFAULT_CELL_HEIGHT,
+    sprite: 'person',
+    sheet: 'manager'
+  });  
   
   return actor;
 }

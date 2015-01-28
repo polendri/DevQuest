@@ -14,6 +14,7 @@ window.addEventListener('load',function() {
   Q.gravityX = 0;
   Q.gravityY = 0;
   
+  initAnimations(Q);
   initComponents(Q);
   initSprites(Q);
   initScenes(Q);
@@ -26,12 +27,14 @@ window.addEventListener('load',function() {
     'sprites/coffee.png, ' +
     'sprites/coder.png, ' +
     'sprites/tester.png, ' +
-    'sprites/manager.png, ' +
+    'sprites/manager.png, sprites/manager.json, ' +
     'sprites/bug.png, ' +
     'sprites/customer.png, ' +
     'sprites/salesperson.png, ' +
     'sprites/stress_ball.png',
     function() {
+      Q.compileSheets("sprites/manager.png", "sprites/manager.json");
+
       // Start the show
       Q.stageScene("mainMenu");
 
