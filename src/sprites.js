@@ -112,6 +112,7 @@ function initSprites(Q) {
       defaultProps = defaultProps || {};
       defaultProps.asset = 'sprites/coder.png';
       defaultProps.team = 'players';
+      defaultProps.speed = 300;
       defaultProps.bulletSpeed = 400;
       defaultProps.rangeWeaponType = Q.StressBall;
       

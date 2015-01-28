@@ -237,8 +237,6 @@ function initComponents(Q) {
       // Counter that must run down before a new facing can be chosen. This is
       // to prevent stuttery behaviour when moving diagonally.
       commitment: 0,
-      // Whether or not homing is active.
-      homingActive: false,
       // Used to know how far a target can be found
       sight: 300,
     },
@@ -253,18 +251,20 @@ function initComponents(Q) {
     step: function(dt) {
       var p = this.entity.p;
       p.retargetCountdown -= dt;
+      p.propelled = false;
 
       // Try to find a target if we don't have one, if it's dead, or if it's
       // just time to refresh.
       if (p.retargetCountdown <= 0 && (!p.target || !p.homingPredicate(p.target))) {
         this._acquireTarget();
-        p.homingActive = true;
       }
 
       // Quit if we failed to find one.
       if (p.target === null) {
         return;
       }
+
+      p.propelled = true;
 
       // Get the distance to the target.
       var dx = p.target.p.x - p.x;
@@ -273,16 +273,16 @@ function initComponents(Q) {
 
       // If we're inactive but the target is still within our restartDistance,
       // we can shortcircuit, otherwise we need to start up again.
-      if (!p.homingActive && targetDistance < p.restartDistance) {
+      if (!p.propelled && targetDistance < p.restartDistance) {
         return;
       }
       else {
-        p.homingActive = true;
+        p.propelled = true;
       }
 
       // Stop if we're close enough to the target.
       if (targetDistance <= p.stopDistance) {
-        p.homingActive = false;
+        p.propelled = false;
         return;
       }
 
@@ -290,7 +290,6 @@ function initComponents(Q) {
       // we've committed to going in the current direction.
       if (p.commitment <= 0) {
         this._chooseFacing(p.target);
-        p.propelled = true;
       }
 
       p.commitment -= dt;
